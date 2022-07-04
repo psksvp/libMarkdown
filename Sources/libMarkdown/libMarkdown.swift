@@ -1,11 +1,7 @@
 import lowdown
+import Foundation
 
-public struct libMarkdown 
-{
-  public private(set) var text = "Hello, World!"
 
-  public init() 
-  {
-    
-  }
-}
+
+
+
