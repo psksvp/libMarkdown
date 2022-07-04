@@ -9,16 +9,16 @@
 import Foundation
 import CommonSwift
 
-protocol MarkdownFilter
+public protocol MarkdownFilter
 {
   var targetPattern:String {get}
   func run(_ block: String) -> String?
 }
 
 
-class Markdown
+public class Markdown
 {
-  class func headerOutline(_ md: String) -> [String]?
+  public class func headerOutline(_ md: String) -> [String]?
   {
     func headers() -> [Substring]
     {
@@ -63,14 +63,14 @@ class Markdown
   }
   
   // filters
-  class func runfilters(_ md: String) -> String
+  public class func runfilters(_ md: String) -> String
   {
     return runFilters(filters: [FilterAsciiMath(), FilterUnderlineText(), FilterMermaid(), FilterTableCSV()],
                       onMarkdown: md)
   }
   
   ///////////////////////////////
-  class func runFilters(filters: [MarkdownFilter], onMarkdown md: String) -> String
+  public class func runFilters(filters: [MarkdownFilter], onMarkdown md: String) -> String
   {
     var resultMD = md
     for f in filters
@@ -80,7 +80,7 @@ class Markdown
     return resultMD
   }
   
-  class func runFilter(_ f: MarkdownFilter, onMarkdown md: String) -> String
+  public class func runFilter(_ f: MarkdownFilter, onMarkdown md: String) -> String
   {
     var result = md
 
@@ -103,41 +103,41 @@ class Markdown
   }
   
   
-  class FilterAsciiMath: MarkdownFilter
+  public class FilterAsciiMath: MarkdownFilter
   {
-    var targetPattern: String
+    public var targetPattern: String
     {
       get { return #"<`(.*?)`>"# }
     }
     
-    func run(_ block: String) -> String?
+    public func run(_ block: String) -> String?
     {
       return "`` `\(block.trim())` ``"
     }
   }
   
-  class FilterUnderlineText: MarkdownFilter
+  public class FilterUnderlineText: MarkdownFilter
   {
-    var targetPattern: String
+    public var targetPattern: String
     {
       get { return #"=(.*?)="# }
     }
     
-    func run(_ block: String) -> String?
+    public func run(_ block: String) -> String?
     {
       return "<u>\(block)</u>"
     }
   }
   
   
-  class FilterMermaid: MarkdownFilter
+  public class FilterMermaid: MarkdownFilter
   {
-    var targetPattern: String
+    public var targetPattern: String
     {
       get {return #"(?s)~~~\s*mermaid\s*(.*?)~~~"#}
     }
     
-    func run(_ block: String) -> String?
+    public func run(_ block: String) -> String?
     {
       return """
       <div class="mermaid">
@@ -147,14 +147,14 @@ class Markdown
     }
   }
   
-  class FilterTableCSV: MarkdownFilter
+  public class FilterTableCSV: MarkdownFilter
   {
-    var targetPattern: String
+    public var targetPattern: String
     {
       get {return #"(?s)~~~\s*csvtable\s*(.*?)~~~"#}
     }
     
-    func run(_ block: String) -> String?
+    public func run(_ block: String) -> String?
     {
       let reader = CSVReader(with: block)
 
