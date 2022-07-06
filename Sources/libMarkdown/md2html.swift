@@ -30,12 +30,15 @@ public func md2html(_ md: String) -> String
                       LOWDOWN_SMARTY |
                       LOWDOWN_STANDALONE)
   
-  var obuf: UnsafeMutablePointer<CChar>?  // &obuf becomes char**
+  var obuf: UnsafeMutablePointer<CChar>? = nil // &obuf becomes char**
   var osize:Int = 0
+  
   let _ = lowdown_buf(&opt, md, md.utf8.count, &obuf, &osize, nil)
   if let out = obuf
   {
-    return String(cString: out)
+    defer {obuf?.deallocate()}
+    let d = Data(bytes: out, count: osize)
+    return String(decoding: d, as: UTF8.self)
   }
   return ""
 }
