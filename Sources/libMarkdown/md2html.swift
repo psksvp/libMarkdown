@@ -22,6 +22,12 @@ public func md2html(_ md: String) -> String
                     LOWDOWN_COMMONMARK |
                     LOWDOWN_DEFLIST |
                     LOWDOWN_IMG_EXT |
+                    LOWDOWN_ATTRS |
+                    LOWDOWN_MATH |
+                    LOWDOWN_STRIKE |
+                    LOWDOWN_SUPER |
+                    LOWDOWN_TABLES |
+                    LOWDOWN_TASKLIST |
                     LOWDOWN_METADATA)
 
   opt.oflags = UInt32(LOWDOWN_HTML_HEAD_IDS |
