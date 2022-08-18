@@ -8,7 +8,7 @@
 import Foundation
 import lowdown
 
-public func md2html(_ md: String) -> String
+public func md2html(_ md: String, standAlone: Bool = true) -> String
 {
   var opt = lowdown_opts()
   
@@ -30,11 +30,18 @@ public func md2html(_ md: String) -> String
                     LOWDOWN_TASKLIST |
                     LOWDOWN_METADATA)
 
-  opt.oflags = UInt32(LOWDOWN_HTML_HEAD_IDS |
-                      LOWDOWN_HTML_NUM_ENT |
-                      LOWDOWN_HTML_OWASP |
-                      LOWDOWN_SMARTY |
-                      LOWDOWN_STANDALONE)
+  
+  opt.oflags = standAlone ? UInt32(LOWDOWN_HTML_HEAD_IDS |
+                                   LOWDOWN_HTML_NUM_ENT |
+                                   LOWDOWN_HTML_OWASP |
+                                   LOWDOWN_SMARTY |
+                                   LOWDOWN_STANDALONE) :
+                            UInt32(LOWDOWN_HTML_HEAD_IDS |
+                                   LOWDOWN_HTML_NUM_ENT |
+                                   LOWDOWN_HTML_OWASP |
+                                   LOWDOWN_SMARTY)
+  
+  
   
   var obuf: UnsafeMutablePointer<CChar>? = nil // &obuf becomes char**
   var osize:Int = 0
