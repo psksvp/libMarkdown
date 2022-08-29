@@ -18,6 +18,11 @@ public protocol MarkdownFilter
 
 public class Markdown
 {
+//  public class func headerFrom(position: String.Index) -> String?
+//  {
+//    
+//  }
+  
   public class func headerOutline(_ md: String) -> [String]?
   {
     func headers() -> [Substring]

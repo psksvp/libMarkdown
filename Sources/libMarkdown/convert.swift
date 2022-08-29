@@ -2,21 +2,35 @@
 //  File.swift
 //  
 //
-//  Created by psksvp on 4/7/2022.
+//  Created by psksvp on 29/8/2022.
 //
 
 import Foundation
 import lowdown
 
+public enum OutputType
+{
+  case html
+  case latex
+  
+  var rawValue: lowdown_type
+  {
+    switch self
+    {
+      case .html: return LOWDOWN_HTML
+      case .latex: return LOWDOWN_LATEX
+    }
+  }
+}
 
 // lowdown doc is at
 // https://kristaps.bsd.lv/lowdown/lowdown.3.html
 
-public func md2html(_ md: String, standAlone: Bool = true) -> String
+public func convert(_ md: String, to t: OutputType, standAlone: Bool = true) -> String
 {
   var opt = lowdown_opts()
   
-  opt.type = LOWDOWN_HTML
+  opt.type = t.rawValue
   opt.feat = UInt32(LOWDOWN_FOOTNOTES |
                     LOWDOWN_AUTOLINK |
                     LOWDOWN_TABLES |
@@ -59,8 +73,3 @@ public func md2html(_ md: String, standAlone: Bool = true) -> String
   }
   return ""
 }
-
-
-
-
-
