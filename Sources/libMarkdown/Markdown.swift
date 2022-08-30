@@ -161,15 +161,36 @@ public class Markdown
     
     public func run(_ block: String) -> String?
     {
+      func row(_ elements: [String]) -> String
+      {
+        """
+        <tr>
+        \(elements.map {"<th>\($0)</th>"}.joined(separator: " "))
+        </tr>
+        """
+      }
+      
       let reader = CSVReader(with: block)
 
-      let result = """
-      \(reader.headers.joined(separator: "|"))
-      \(String(repeating: "---|", count: reader.headers.count))
-      \(reader.rows.map{$0.joined(separator: "|")}.joined(separator: "\n"))
-      """
-      return result
+      return """
+             <table>
+             \(row(reader.headers))
+             \(reader.rows.map{row($0)}.joined(separator: "\n"))
+             </table>
+             """
     }
+    
+//    public func run(_ block: String) -> String?
+//    {
+//      let reader = CSVReader(with: block)
+//
+//      let result = """
+//      \(reader.headers.joined(separator: "|"))
+//      \(String(repeating: "---|", count: reader.headers.count))
+//      \(reader.rows.map{$0.joined(separator: "|")}.joined(separator: "\n"))
+//      """
+//      return result
+//    }
   }
   
 }
