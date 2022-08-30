@@ -22,6 +22,21 @@ public class Markdown
 //  {
 //    
 //  }
+
+  public class func extractContentAndCaption(_ block: String) -> (content: String, caption: String)
+  {
+    let capPat = #"\s*caption:\s*(.*)"#
+    if let capRange = block.range(of: capPat, options: [.regularExpression]),
+       let cap = block[capRange].regexLift(usingPattern: capPat).first
+    {
+      let content = String(block[block.startIndex ..< capRange.lowerBound])
+      return (content, cap)
+    }
+    else
+    {
+      return (block, "")
+    }
+  }
   
   public class func headerOutline(_ md: String) -> [String]?
   {
@@ -144,14 +159,16 @@ public class Markdown
     
     public func run(_ block: String) -> String?
     {
+      let (content, caption) = Markdown.extractContentAndCaption(block)
+      
       return """
-      <figure>
-      <div class="mermaid">
-      \(block)
-      </div>
-      <figcaption>Fig.1 - Trulli, Puglia, Italy.</figcaption>
-      </figure>
-      """
+             <figure>
+             <div class="mermaid">
+             \(content)
+             </div>
+             <figcaption>\(caption)</figcaption>
+             </figure>
+             """
     }
   }
   
@@ -172,8 +189,8 @@ public class Markdown
         </tr>
         """
       }
-      
-      let reader = CSVReader(with: block)
+      let (content, caption) = Markdown.extractContentAndCaption(block)
+      let reader = CSVReader(with: content)
 
       return """
              <figure>
@@ -181,7 +198,7 @@ public class Markdown
              \(row(reader.headers))
              \(reader.rows.map{row($0)}.joined(separator: "\n"))
              </table>
-             <figcaption>Fig.1 - Trulli, Puglia, Italy.</figcaption>
+             <figcaption>\(caption)</figcaption>
              </figure>
              """
     }
