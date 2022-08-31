@@ -85,8 +85,9 @@ public class Markdown
   // filters
   public class func runfilters(_ md: String) -> String
   {
-    return runFilters(filters: [FilterAsciiMath(), FilterUnderlineText(), FilterMermaid(), FilterTableCSV()],
-                      onMarkdown: md)
+    return runFilters(filters: [FilterChartJS(), FilterAsciiMath(), FilterUnderlineText(), FilterMermaid(), FilterTableCSV()],
+                       onMarkdown: md.replacingOccurrences(of: "-pagebreak-",
+                                                          with: "<div style=\"page-break-after: always;\"></div>"))
   }
   
   ///////////////////////////////
@@ -168,6 +169,28 @@ public class Markdown
              </div>
              <figcaption>\(caption)</figcaption>
              </figure>
+             """
+    }
+  }
+  
+  public class FilterChartJS: MarkdownFilter
+  {
+    public var targetPattern: String
+    {
+      get {return #"(?s)~~~\s*chart\s*(.*?)~~~"#}
+    }
+    
+    public func run(_ block: String) -> String?
+    {
+      let (content, caption) = Markdown.extractContentAndCaption(block)
+      
+      return """
+             <div>
+             <canvas id="myChart"></canvas>
+             </div>
+             <script>
+             \(content)
+             </script>
              """
     }
   }
