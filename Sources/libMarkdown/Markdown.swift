@@ -83,10 +83,10 @@ public class Markdown
   }
   
   // filters
-  public class func runfilters(_ md: String) -> String
+  public class func runfilters(_ md: String, additionalFilters: [MarkdownFilter] = [MarkdownFilter]()) -> String
   {
-    return runFilters(filters: [FilterChartJS(), FilterAsciiMath(), FilterUnderlineText(), FilterMermaid(), FilterTableCSV()],
-                       onMarkdown: md.replacingOccurrences(of: "-pagebreak-",
+    return runFilters(filters: additionalFilters + [FilterAsciiMath(), FilterUnderlineText(), FilterMermaid(), FilterTableCSV()],
+                       onMarkdown: md.replacingOccurrences(of: "---pagebreak---",
                                                           with: "<div style=\"page-break-after: always;\"></div>"))
   }
   
@@ -173,27 +173,27 @@ public class Markdown
     }
   }
   
-  public class FilterChartJS: MarkdownFilter
-  {
-    public var targetPattern: String
-    {
-      get {return #"(?s)~~~\s*chart\s*(.*?)~~~"#}
-    }
-    
-    public func run(_ block: String) -> String?
-    {
-      let (content, caption) = Markdown.extractContentAndCaption(block)
-      
-      return """
-             <div>
-             <canvas id="myChart"></canvas>
-             </div>
-             <script>
-             \(content)
-             </script>
-             """
-    }
-  }
+//  public class FilterChartJS: MarkdownFilter
+//  {
+//    public var targetPattern: String
+//    {
+//      get {return #"(?s)~~~\s*chart\s*(.*?)~~~"#}
+//    }
+//
+//    public func run(_ block: String) -> String?
+//    {
+//      let (content, caption) = Markdown.extractContentAndCaption(block)
+//
+//      return """
+//             <div>
+//             <canvas id="myChart"></canvas>
+//             </div>
+//             <script>
+//             \(content)
+//             </script>
+//             """
+//    }
+//  }
   
   public class FilterTableCSV: MarkdownFilter
   {
@@ -225,7 +225,6 @@ public class Markdown
              </figure>
              """
     }
-    
   }
   
 }
