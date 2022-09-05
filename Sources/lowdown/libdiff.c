@@ -79,7 +79,7 @@ onp_snake(struct onp_diff *diff, int k, int above, int below)
 		++y;
 	}
 
-	diff->path[k + diff->offset] = diff->pathcoordsz;
+	diff->path[k + diff->offset] = (int) diff->pathcoordsz;
 
 	pp = reallocarray
 		(diff->pathcoords,
@@ -294,7 +294,7 @@ onp_compose(struct onp_diff *diff, struct diff *result)
 			if (fp[k + diff->offset] < 0)
 				goto out;
 		}
-		for (k = diff->delta + p;
+		for (k = (int) diff->delta + p;
 		     k >= (ssize_t)diff->delta + 1; k--) {
 			fp[k + diff->offset] = onp_snake(diff, k,
 				fp[k - 1 + diff->offset] + 1,
@@ -304,7 +304,7 @@ onp_compose(struct onp_diff *diff, struct diff *result)
 		}
 
 		fp[diff->delta + diff->offset] =
-			onp_snake(diff, diff->delta,
+			onp_snake(diff, (int) diff->delta,
 				fp[diff->delta - 1 + diff->offset] + 1,
 				fp[diff->delta + 1 + diff->offset]);
 		if (fp[diff->delta + diff->offset] < 0)

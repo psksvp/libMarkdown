@@ -1813,7 +1813,7 @@ rndr(struct lowdown_metaq *mq, struct nroff *st,
 		rc = rndr_linebreak(obq);
 		break;
 	case LOWDOWN_LINK:
-		rc = rndr_link(st, obq, &tmpbq, &n->rndr_link);
+		rc = (int) rndr_link(st, obq, &tmpbq, &n->rndr_link);
 		break;
 	case LOWDOWN_SUPERSCRIPT:
 		rc = rndr_superscript(obq, &tmpbq);
