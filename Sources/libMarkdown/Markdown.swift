@@ -173,28 +173,6 @@ public class Markdown
     }
   }
   
-//  public class FilterChartJS: MarkdownFilter
-//  {
-//    public var targetPattern: String
-//    {
-//      get {return #"(?s)~~~\s*chart\s*(.*?)~~~"#}
-//    }
-//
-//    public func run(_ block: String) -> String?
-//    {
-//      let (content, caption) = Markdown.extractContentAndCaption(block)
-//
-//      return """
-//             <div>
-//             <canvas id="myChart"></canvas>
-//             </div>
-//             <script>
-//             \(content)
-//             </script>
-//             """
-//    }
-//  }
-  
   public class FilterTableCSV: MarkdownFilter
   {
     public var targetPattern: String
