@@ -40,46 +40,10 @@ public class Markdown
   
   public class func headerOutline(_ md: String) -> [String]?
   {
-    func headers() -> [Substring]
+    md.ranges(ofRegex: #"^(.*?)[\n]"#).compactMap
     {
-      md.split(separator: "\n").filter { isHeader(String($0)) }
+      r in md[r].hasPrefix("#") ? String(md[r]).trimmingCharacters(in: .whitespacesAndNewlines) : nil
     }
-    
-    func isHeader(_ line: String) -> Bool
-    {
-      for h in ["######", "#####", "####", "###", "##", "#"]
-      {
-        if line.hasPrefix(h)
-        {
-          return true
-        }
-      }
-      
-      return false
-    }
-    
-    func removeHash(_ s: String) -> String
-    {
-      func hash2space(_ c: Character) -> Character
-      {
-        return c == "#" ? " " : c
-      }
-      
-      let m = s.map
-      {
-        hash2space($0)
-      }
-      
-      return String(m)
-    }
-    
-    let ol = headers().map
-    {
-      //removeHash(String($0))
-      String($0)
-    }
-
-    return ol.count > 0 ? ol : nil
   }
   
   // filters
